@@ -1,9 +1,9 @@
-import { Lenis, ScrollBar } from 'components'
+import { Lenis, Nav, ScrollBar } from 'components'
 
 export default function Template({ children }) {
   return (
     <>
-      {/* <Nav /> */}
+      <Nav />
       <main id="main">{children}</main>
       {/* <Footer /> */}
       <ScrollBar />
