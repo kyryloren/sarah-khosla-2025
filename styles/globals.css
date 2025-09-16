@@ -1,0 +1,43 @@
+@layer theme, base, components, utilities;
+
+@import 'tailwindcss';
+@import 'tailwindcss/theme.css' layer(theme);
+@import 'tailwindcss/preflight.css' layer(base);
+@import 'tailwindcss/utilities.css' layer(utilities);
+
+@custom-variant dark (&:where(.dark, .dark *));
+@media (hover: none) and (pointer: coarse) {
+  .scrollbar-thumb {
+    display: none !important;
+  }
+}
+@theme inline {
+  --font-haffer: var(--font-haffer);
+}
+
+:root {
+  overscroll-behavior: none;
+}
+
+::-webkit-scrollbar {
+  display: none;
+}
+
+html {
+  box-sizing: border-box;
+  width: 100%;
+}
+
+body {
+  min-width: 100vw;
+  min-height: 100vh;
+  margin: 0;
+  overflow-x: hidden;
+  overscroll-behavior-y: none;
+  font-family: var(--haffer);
+
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  font-variant-ligatures: common-ligatures;
+  text-rendering: optimizelegibility;
+}
