@@ -1,4 +1,5 @@
 import { Haffer } from 'styles'
+import { headers } from 'next/headers'
 
 import '/styles/globals.css'
 
@@ -43,7 +44,13 @@ export const metadata = {
   },
 }
 
-export default function RootLayout({ children }) {
+export default async function RootLayout({ children }) {
+  const headersList = await headers()
+  const isRootRoute = headersList.get('x-is-root-route') === 'true'
+
+  // Add 'dark' class to body when on the root route
+  const bodyClassName = `bg-neutral-50 text-neutral-950 dark:bg-neutral-950 dark:text-neutral-50 ${isRootRoute ? 'dark' : ''}`
+
   return (
     <html
       className={`${Haffer.className}`}
@@ -73,10 +80,7 @@ export default function RootLayout({ children }) {
         <meta name="apple-mobile-web-app-title" content="New Studio" />
         <link rel="manifest" href="/favicon/site.webmanifest" />
       </head>
-      <body
-        className="bg-neutral-50 text-neutral-950 dark:bg-neutral-950 dark:text-neutral-50"
-        suppressHydrationWarning
-      >
+      <body className={bodyClassName} suppressHydrationWarning>
         {children}
       </body>
     </html>

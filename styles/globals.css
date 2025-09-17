@@ -41,3 +41,5 @@ body {
   font-variant-ligatures: common-ligatures;
   text-rendering: optimizelegibility;
 }
+
+/* Animation classes for About component - using CSS transitions instead of keyframes */
