@@ -59,7 +59,7 @@ export default function Scrollbar() {
   }, [lenis, innerHeight])
 
   return (
-    <div className="fixed bottom-0 right-0 top-0 z-50">
+    <div className="fixed bottom-0 right-0 top-0 z-50" data-lenis-scrollbar>
       <div ref={innerMeasureRef} className="relative h-full">
         <div
           className="scrollbar-thumb absolute right-0 min-h-[150px] w-[8px] cursor-grab bg-neutral-300 dark:bg-neutral-800"

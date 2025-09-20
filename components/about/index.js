@@ -1,8 +1,10 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useSearchParams } from 'next/navigation'
+import { useLenis } from 'lenis/react'
 import { Container, Grid } from 'styles'
+import Masonary from 'components/masonary'
 
 function Row({
   title,
@@ -73,46 +75,73 @@ export default function About() {
   const isVisible = searchParams.get('about') === 'true'
   const [isAnimated, setIsAnimated] = useState(false)
   const [isClosing, setIsClosing] = useState(false)
-  const [shouldRender, setShouldRender] = useState(false)
+  const [isOpening, setIsOpening] = useState(false)
+  const [isHidden, setIsHidden] = useState(true)
+  const lenis = useLenis()
+  const sectionRef = useRef(null)
 
   useEffect(() => {
     if (isVisible) {
-      setShouldRender(true)
+      setIsHidden(false)
       setIsClosing(false)
-      setIsAnimated(false) // Reset animation state
-      // Trigger animations after a short delay to ensure the component is mounted
-      const timer = setTimeout(() => {
+      setIsAnimated(false)
+      setIsOpening(true)
+
+      // Stop Lenis to prevent background from scrolling when modal is open
+      lenis?.stop?.()
+
+      // Ensure modal scroll starts at top on open
+      if (sectionRef.current) {
+        sectionRef.current.scrollTop = 0
+      }
+
+      const openingTimer = setTimeout(() => {
+        setIsOpening(false)
+      }, 50)
+
+      const rowTimer = setTimeout(() => {
         setIsAnimated(true)
       }, 100)
-      return () => clearTimeout(timer)
+
+      return () => {
+        clearTimeout(openingTimer)
+        clearTimeout(rowTimer)
+      }
     } else {
-      if (shouldRender) {
+      if (!isHidden) {
         setIsClosing(true)
-        setIsAnimated(false) // Stop row animations immediately
-        // Delay hiding the component until clip-path animation completes
+        setIsAnimated(false)
         const timer = setTimeout(() => {
           setIsClosing(false)
-          setShouldRender(false)
-        }, 300) // Match the clip-path transition duration
+          setIsHidden(true)
+          // Re-enable Lenis after modal fully closes
+          lenis?.start?.()
+          // Reset scroll so it does not persist into next open
+          if (sectionRef.current) {
+            sectionRef.current.scrollTop = 0
+          }
+        }, 300)
         return () => clearTimeout(timer)
       }
     }
-  }, [isVisible, shouldRender])
-
-  if (!shouldRender) {
-    return null
-  }
+  }, [isVisible, isHidden, lenis])
 
   return (
     <section
-      className={`mt-30 fixed left-0 top-0 w-full bg-neutral-50 text-neutral-950 dark:bg-neutral-950 dark:text-neutral-50 ${
+      ref={sectionRef}
+      data-lenis-prevent
+      className={`pt-30 fixed left-0 top-0 z-40 h-screen w-full overflow-y-auto overscroll-contain bg-neutral-50 text-neutral-950 dark:bg-neutral-950 dark:text-neutral-50 ${
         isVisible ? 'pointer-events-auto' : 'pointer-events-none'
       }`}
       style={{
-        clipPath: isClosing
+        display: isHidden ? 'none' : 'block',
+        clipPath: isOpening
           ? 'polygon(0 0, 100% 0, 100% 0, 0 0)'
-          : 'polygon(0 0, 100% 0, 100% 100%, 0 100%)',
-        transition: isClosing ? 'clip-path 300ms ease-in-out' : 'none',
+          : isClosing
+            ? 'polygon(0 0, 100% 0, 100% 0, 0 0)'
+            : 'polygon(0 0, 100% 0, 100% 100%, 0 100%)',
+        transition:
+          isOpening || isClosing ? 'clip-path 300ms ease-in-out' : 'none',
       }}
     >
       <Container>
@@ -130,7 +159,7 @@ export default function About() {
           </p>
         </Row>
         <Row
-          title="Client"
+          title="Clients"
           accordion={true}
           isAnimated={isAnimated}
           delay={200}
@@ -176,6 +205,15 @@ export default function About() {
             </a>
           </div>
         </Row>
+
+        <div
+          className={`mt-7 transition-all duration-700 ease-out ${
+            isAnimated ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
+          }`}
+          style={{ transitionDelay: isAnimated ? '600ms' : '0ms' }}
+        >
+          <Masonary />
+        </div>
       </Container>
     </section>
   )

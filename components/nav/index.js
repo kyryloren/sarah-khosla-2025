@@ -1,14 +1,17 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { useRouter, useSearchParams } from 'next/navigation'
+import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import { Container, Grid } from 'styles'
 import Link from 'next/link'
+import { useLenis } from 'lenis/react'
 
 export default function Nav() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const router = useRouter()
   const searchParams = useSearchParams()
+  const lenis = useLenis()
+  const pathname = usePathname()
 
   useEffect(() => {
     // Check if 'about' query parameter is set to 'true'
@@ -25,23 +28,32 @@ export default function Nav() {
       // Add ?about=true to URL
       const currentUrl = new URL(window.location.href)
       currentUrl.searchParams.set('about', 'true')
-      router.push(currentUrl.pathname + currentUrl.search)
+      router.push(currentUrl.pathname + currentUrl.search, { scroll: false })
     } else {
       // Remove ?about from URL
       const currentUrl = new URL(window.location.href)
       currentUrl.searchParams.delete('about')
       const newUrl = currentUrl.pathname + (currentUrl.search || '')
-      router.push(newUrl)
+      router.push(newUrl, { scroll: false })
     }
   }
 
   return (
-    <header className="fixed left-0 top-0 z-50 w-full bg-neutral-50 py-5 text-neutral-950 dark:bg-neutral-950 dark:text-neutral-50">
+    <header className="fixed left-0 top-0 z-50 w-full bg-neutral-50 py-7 text-neutral-950 dark:bg-neutral-950 dark:text-neutral-50">
       <Container>
         <Grid>
           <div className="col-start-1 col-end-2">
             <p className="text-sm leading-4">
-              <Link href={'/'}>
+              <Link
+                href={'/'}
+                className="hover:opacity-60"
+                onClick={(e) => {
+                  e.preventDefault()
+
+                  if (pathname === '/') lenis.scrollTo(0)
+                  else router.push('/')
+                }}
+              >
                 Sarah Khosla
                 <br />
                 Design & Art Direction
