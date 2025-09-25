@@ -70,7 +70,7 @@ function Row({
   )
 }
 
-export default function About() {
+export default function About({ data, socials }) {
   const searchParams = useSearchParams()
   const isVisible = searchParams.get('about') === 'true'
   const [isAnimated, setIsAnimated] = useState(false)
@@ -130,6 +130,7 @@ export default function About() {
     <section
       ref={sectionRef}
       data-lenis-prevent
+      id="about"
       className={`pt-30 fixed left-0 top-0 z-40 h-screen w-full overflow-y-auto overscroll-contain bg-neutral-50 text-neutral-950 dark:bg-neutral-950 dark:text-neutral-50 ${
         isVisible ? 'pointer-events-auto' : 'pointer-events-none'
       }`}
@@ -146,16 +147,8 @@ export default function About() {
     >
       <Container>
         <Row title="About" isAnimated={isAnimated} delay={0}>
-          <p className="text-2xl leading-7">
-            Sarah Khosla is a independent designer & art director based in
-            California.
-            <br />
-            <br />
-            With a decade of experience in the field of brand and visual design,
-            she has collaborated with a diverse range of clients, studios, and
-            agencies, including Google, Manual, Stance, Dre & Snoop, HBOMax,
-            Maude Apatow, among others. She's passionate about building brands
-            that are as conceptually strong as they are beautiful.
+          <p className="whitespace-pre-line text-2xl leading-7">
+            {data?.description}
           </p>
         </Row>
         <Row
@@ -165,44 +158,45 @@ export default function About() {
           delay={200}
         >
           <div className="flex flex-col">
-            <p className="text-sm leading-4">Emmy's Cookies</p>
-            <p className="text-sm leading-4">Google</p>
-            <p className="text-sm leading-4">Dre & Snoop</p>
-            <p className="text-sm leading-4">Scarrs Pizza</p>
-            <p className="text-sm leading-4">Harley Davidson</p>
-            <p className="text-sm leading-4">HBO Max</p>
-            <p className="text-sm leading-4">Iggy Rosales</p>
-            <p className="text-sm leading-4">OnePay</p>
-            <p className="text-sm leading-4">KitKat</p>
-            <p className="text-sm leading-4">Keap</p>
+            {data?.Clients?.map((client, index) => (
+              <p key={index} className="text-sm leading-4">
+                {client?.text}
+              </p>
+            ))}
           </div>
         </Row>
         <Row title={'Contact'} isAnimated={isAnimated} delay={400}>
           <div className="flex flex-col">
-            <a
-              href="mailto:hello@sarahkhosla.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-fit text-sm leading-4 hover:opacity-60"
-            >
-              E hello@sarahkhosla.com
-            </a>
-            <a
-              href="https://www.linkedin.com/in/sarahkhosla"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-fit text-sm leading-4 hover:opacity-60"
-            >
-              L LinkedIn
-            </a>
-            <a
-              href="https://www.instagram.com/sarahkhosla"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-fit text-sm leading-4 hover:opacity-60"
-            >
-              I Instagram
-            </a>
+            {socials?.email && (
+              <a
+                href={`mailto:${socials?.email}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-fit text-sm leading-4 hover:opacity-60"
+              >
+                E {socials?.email}
+              </a>
+            )}
+            {socials?.linkedin && (
+              <a
+                href={socials?.linkedin}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-fit text-sm leading-4 hover:opacity-60"
+              >
+                L LinkedIn
+              </a>
+            )}
+            {socials?.instagram && (
+              <a
+                href={socials?.instagram}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-fit text-sm leading-4 hover:opacity-60"
+              >
+                I Instagram
+              </a>
+            )}
           </div>
         </Row>
 

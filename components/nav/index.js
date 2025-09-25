@@ -6,7 +6,7 @@ import { Container, Grid } from 'styles'
 import Link from 'next/link'
 import { useLenis } from 'lenis/react'
 
-export default function Nav() {
+export default function Nav({ socials }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const router = useRouter()
   const searchParams = useSearchParams()
@@ -43,22 +43,29 @@ export default function Nav() {
       <Container>
         <Grid>
           <div className="col-start-1 col-end-2">
-            <p className="text-sm leading-4">
-              <Link
-                href={'/'}
-                className="hover:opacity-60"
-                onClick={(e) => {
-                  e.preventDefault()
+            <Link
+              href={'/'}
+              className="hover:opacity-60"
+              onClick={(e) => {
+                e.preventDefault()
+                // Close About tab if open and remove query param
+                setIsMenuOpen(false)
+                const currentUrl = new URL(window.location.href)
+                currentUrl.searchParams.delete('about')
 
-                  if (pathname === '/') lenis.scrollTo(0)
-                  else router.push('/')
-                }}
-              >
-                Sarah Khosla
-                <br />
-                Design & Art Direction
-              </Link>
-            </p>
+                if (pathname === '/') {
+                  router.push(currentUrl.pathname + (currentUrl.search || ''), {
+                    scroll: false,
+                  })
+                  lenis.scrollTo(0)
+                } else {
+                  router.push('/')
+                }
+              }}
+            >
+              <p className="text-sm leading-4">Sarah Khosla</p>
+              <p className="text-sm leading-4">Design & Art Direction</p>
+            </Link>
           </div>
           <div className="col-start-2 col-end-4">
             <p className="text-sm leading-4">
@@ -68,25 +75,26 @@ export default function Nav() {
             </p>
           </div>
           <div className="col-start-4 col-end-5">
-            <p className="text-sm leading-4">
+            {socials?.linkedin && (
               <a
-                href="https://www.linkedin.com/in/sarahkhosla"
+                href={socials?.linkedin}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="underline hover:opacity-60"
+                className="block w-fit text-sm leading-4 underline hover:opacity-60"
               >
                 LinkedIn
               </a>
-              <br />
+            )}
+            {socials?.email && (
               <a
-                href="mailto:hello@sarahkhosla.com"
+                href={`mailto:${socials?.email}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="hover:opacity-60"
+                className="block w-fit text-sm leading-4 hover:opacity-60"
               >
-                hello@sarahkhosla.com
+                {socials?.email}
               </a>
-            </p>
+            )}
           </div>
           <div className="col-start-5 flex w-full justify-end">
             <button
