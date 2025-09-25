@@ -70,7 +70,7 @@ function Row({
   )
 }
 
-export default function About({ data, socials }) {
+export default function About({ data, socials, projects }) {
   const searchParams = useSearchParams()
   const isVisible = searchParams.get('about') === 'true'
   const [isAnimated, setIsAnimated] = useState(false)
@@ -206,7 +206,7 @@ export default function About({ data, socials }) {
           }`}
           style={{ transitionDelay: isAnimated ? '600ms' : '0ms' }}
         >
-          <Masonary />
+          <Masonary data={projects} />
         </div>
       </Container>
     </section>

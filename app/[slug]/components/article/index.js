@@ -1,8 +1,6 @@
 import { Container, Grid, RenderMedia } from 'styles'
 
 export default function Article({ data }) {
-  console.log(data)
-
   return (
     <section className="relative pt-16">
       <Container>

@@ -1,7 +1,6 @@
 import Link from 'next/link'
 
-export default function Masonary() {
-  // Sample data for the masonry grid
+export default function Masonary({ data }) {
   const images = [
     {
       id: 1,
@@ -64,6 +63,8 @@ export default function Masonary() {
       title: 'Motion Graphics',
     },
   ]
+
+  console.log(data)
 
   return (
     <div className="columns-3 gap-6" style={{ columnFill: 'balance' }}>
