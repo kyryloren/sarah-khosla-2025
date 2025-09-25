@@ -2,15 +2,15 @@ const nextConfig = {
   compiler: {
     removeConsole: process.env.NODE_ENV !== 'development',
   },
-  //   images: {
-  //     remotePatterns: [
-  //       {
-  //         protocol: process.env.PROTOCOL,
-  //         hostname: process.env.STRAPI_HOSTNAME,
-  //       },
-  //     ],
-  //     dangerouslyAllowSVG: true,
-  //   },
+    images: {
+      remotePatterns: [
+        {
+          protocol: process.env.PROTOCOL,
+          hostname: process.env.STRAPI_MEDIA,
+        },
+      ],
+      dangerouslyAllowSVG: true,
+    },
   headers: async () => {
     return [
       {

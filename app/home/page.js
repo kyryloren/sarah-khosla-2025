@@ -1,7 +1,14 @@
+import { Masonary } from 'components'
+import { Container } from 'styles'
+
 export default async function Home() {
   return (
     <>
-      <h1>hello world</h1>
+      <div className="mt-50 relative">
+        <Container>
+          <Masonary />
+        </Container>
+      </div>
     </>
   )
 }

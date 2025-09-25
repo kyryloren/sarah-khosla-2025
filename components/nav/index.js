@@ -1,14 +1,17 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { useRouter, useSearchParams } from 'next/navigation'
+import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import { Container, Grid } from 'styles'
 import Link from 'next/link'
+import { useLenis } from 'lenis/react'
 
-export default function Nav() {
+export default function Nav({ socials }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const router = useRouter()
   const searchParams = useSearchParams()
+  const lenis = useLenis()
+  const pathname = usePathname()
 
   useEffect(() => {
     // Check if 'about' query parameter is set to 'true'
@@ -25,28 +28,44 @@ export default function Nav() {
       // Add ?about=true to URL
       const currentUrl = new URL(window.location.href)
       currentUrl.searchParams.set('about', 'true')
-      router.push(currentUrl.pathname + currentUrl.search)
+      router.push(currentUrl.pathname + currentUrl.search, { scroll: false })
     } else {
       // Remove ?about from URL
       const currentUrl = new URL(window.location.href)
       currentUrl.searchParams.delete('about')
       const newUrl = currentUrl.pathname + (currentUrl.search || '')
-      router.push(newUrl)
+      router.push(newUrl, { scroll: false })
     }
   }
 
   return (
-    <header className="fixed left-0 top-0 z-50 w-full bg-neutral-50 py-5 text-neutral-950 dark:bg-neutral-950 dark:text-neutral-50">
+    <header className="fixed left-0 top-0 z-50 w-full bg-neutral-50 py-7 text-neutral-950 dark:bg-neutral-950 dark:text-neutral-50">
       <Container>
         <Grid>
           <div className="col-start-1 col-end-2">
-            <p className="text-sm leading-4">
-              <Link href={'/'}>
-                Sarah Khosla
-                <br />
-                Design & Art Direction
-              </Link>
-            </p>
+            <Link
+              href={'/'}
+              className="hover:opacity-60"
+              onClick={(e) => {
+                e.preventDefault()
+                // Close About tab if open and remove query param
+                setIsMenuOpen(false)
+                const currentUrl = new URL(window.location.href)
+                currentUrl.searchParams.delete('about')
+
+                if (pathname === '/') {
+                  router.push(currentUrl.pathname + (currentUrl.search || ''), {
+                    scroll: false,
+                  })
+                  lenis.scrollTo(0)
+                } else {
+                  router.push('/')
+                }
+              }}
+            >
+              <p className="text-sm leading-4">Sarah Khosla</p>
+              <p className="text-sm leading-4">Design & Art Direction</p>
+            </Link>
           </div>
           <div className="col-start-2 col-end-4">
             <p className="text-sm leading-4">
@@ -56,25 +75,26 @@ export default function Nav() {
             </p>
           </div>
           <div className="col-start-4 col-end-5">
-            <p className="text-sm leading-4">
+            {socials?.linkedin && (
               <a
-                href="https://www.linkedin.com/in/sarahkhosla"
+                href={socials?.linkedin}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="underline hover:opacity-60"
+                className="block w-fit text-sm leading-4 underline hover:opacity-60"
               >
                 LinkedIn
               </a>
-              <br />
+            )}
+            {socials?.email && (
               <a
-                href="mailto:hello@sarahkhosla.com"
+                href={`mailto:${socials?.email}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="hover:opacity-60"
+                className="block w-fit text-sm leading-4 hover:opacity-60"
               >
-                hello@sarahkhosla.com
+                {socials?.email}
               </a>
-            </p>
+            )}
           </div>
           <div className="col-start-5 flex w-full justify-end">
             <button
