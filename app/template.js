@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Suspense } from 'react'
 import { Lenis, Nav, ScrollBar, About } from 'components'
 import { fetchSanity, queries } from 'lib'
 
@@ -11,12 +11,14 @@ export default async function Template({ children }) {
 
   return (
     <>
-      <Nav socials={globalDoc?.socials} />
-      <About
-        data={aboutDoc}
-        socials={globalDoc?.socials}
-        projects={projectsDoc}
-      />
+      <Suspense fallback={<div />}>
+        <Nav socials={globalDoc?.socials} />
+        <About
+          data={aboutDoc}
+          socials={globalDoc?.socials}
+          projects={projectsDoc}
+        />
+      </Suspense>
       <main id="main">{children}</main>
       {/* <Footer /> */}
       <ScrollBar />

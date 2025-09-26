@@ -1,5 +1,8 @@
+import { VisualEditing } from 'next-sanity/visual-editing'
+import { draftMode } from 'next/headers'
+import { DisableDraftMode, RouteTheme } from 'components'
+
 import { Haffer } from 'styles'
-import RouteTheme from 'components/theme/RouteTheme'
 
 import '/styles/globals.css'
 
@@ -44,7 +47,7 @@ export const metadata = {
   },
 }
 
-export default function RootLayout({ children }) {
+export default async function RootLayout({ children }) {
   return (
     <html
       className={`${Haffer.className}`}
@@ -94,10 +97,15 @@ export default function RootLayout({ children }) {
         className="bg-neutral-50 text-neutral-950 dark:bg-neutral-950 dark:text-neutral-50"
         suppressHydrationWarning
       >
-        {/* Sync route-based theme on client navigation */}
         <div suppressHydrationWarning>{children}</div>
-        {/* Insert client route theme synchronizer */}
         <RouteTheme />
+
+        {(await draftMode()).isEnabled && (
+          <>
+            <VisualEditing />
+            <DisableDraftMode />
+          </>
+        )}
       </body>
     </html>
   )
