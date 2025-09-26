@@ -1,35 +1,23 @@
 import React from 'react'
 import { Lenis, Nav, ScrollBar, About } from 'components'
-import { fetchAPI } from 'lib'
+import { fetchSanity, queries } from 'lib'
 
 export default async function Template({ children }) {
-  const aboutData = await fetchAPI('/about', {
-    populate: '*',
-  })
-  const globalData = await fetchAPI('/global', {
-    populate: '*',
-  })
-  const projectsData = await fetchAPI('/projects', {
-    populate: {
-      fields: ['title', 'slug'],
-    },
-  })
-
-  const aboutDoc = aboutData?.data
-  const globalDoc = globalData?.data
-  const projectsDoc = projectsData?.data
+  const [aboutDoc, globalDoc, projectsDoc] = await Promise.all([
+    fetchSanity(queries.about),
+    fetchSanity(queries.global),
+    fetchSanity(queries.projectsList),
+  ])
 
   return (
     <>
-      <Nav socials={globalDoc?.Socials} />
+      <Nav socials={globalDoc?.socials} />
       <About
         data={aboutDoc}
-        socials={globalDoc?.Socials}
+        socials={globalDoc?.socials}
         projects={projectsDoc}
       />
-      <main id="main">
-        {React.cloneElement(children, { projects: projectsDoc })}
-      </main>
+      <main id="main">{children}</main>
       {/* <Footer /> */}
       <ScrollBar />
       <Lenis root />

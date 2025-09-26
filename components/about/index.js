@@ -158,7 +158,7 @@ export default function About({ data, socials, projects }) {
           delay={200}
         >
           <div className="flex flex-col">
-            {data?.Clients?.map((client, index) => (
+            {data?.clients?.map((client, index) => (
               <p key={index} className="text-sm leading-4">
                 {client?.text}
               </p>

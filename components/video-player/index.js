@@ -80,6 +80,7 @@ export default function VideoPlayer({
         controls={controls}
         className="h-full w-full object-cover"
         preload="metadata"
+        aria-label={alt}
       >
         <track kind="captions" />
         Your browser does not support the video tag.

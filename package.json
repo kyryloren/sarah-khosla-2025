@@ -14,6 +14,8 @@
     "url": "git+https://github.com/kyryloren/sarah-khosla-2025.git"
   },
   "dependencies": {
+    "@sanity/asset-utils": "^2.3.0",
+    "@sanity/preview-kit": "^6.1.3",
     "gsap": "^3.13.0",
     "lenis": "^1.3.11",
     "next": "^15.5.3",
@@ -23,6 +25,8 @@
     "tailwind-merge": "^3.3.1"
   },
   "devDependencies": {
+    "@sanity/client": "^7.11.2",
+    "@sanity/image-url": "^1.2.0",
     "@tailwindcss/postcss": "^4.1.13",
     "prettier": "^3.6.2",
     "prettier-plugin-tailwindcss": "^0.6.14",

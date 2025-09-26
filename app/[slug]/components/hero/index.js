@@ -5,16 +5,19 @@ import Link from 'next/link'
 import { useState } from 'react'
 import { Container, Grid } from 'styles'
 
-export default function Hero({ data }) {
-  const [isExpanded, setIsExpanded] = useState(true)
+const Hero = ({ data }) => {
+  const [isExpanded, setIsExpanded] = useState(false)
 
   return (
-    <section className="relative pt-48">
+    <section className="relative pt-52">
       <Container>
         <Grid>
           <div className="col-start-1 col-end-2">
-            <Link className="flex cursor-pointer items-center gap-2 w-fit" href="/">
-              <Icon name="back" />
+            <Link
+              className="flex w-fit cursor-pointer items-center gap-2 hover:opacity-60"
+              href="/"
+            >
+              <Icon name="back" className="h-auto w-full" />
               <p className="text-sm leading-4">Back</p>
             </Link>
           </div>
@@ -31,10 +34,10 @@ export default function Hero({ data }) {
                 isExpanded ? 'Collapse project info' : 'Expand project info'
               }
             >
-              <div className="relative w-3 flex-shrink-0">
-                <span className="absolute left-1/2 top-1/2 h-0.5 w-3 -translate-x-1/2 -translate-y-1/2 bg-black transition-all duration-200"></span>
+              <div className="relative w-2.5 flex-shrink-0">
+                <span className="h-0.25 absolute left-1/2 top-1/2 w-2.5 -translate-x-1/2 -translate-y-1/2 bg-black transition-all duration-200"></span>
                 <span
-                  className={`absolute left-1/2 top-1/2 h-3 w-0.5 -translate-x-1/2 -translate-y-1/2 bg-black transition-all duration-200 ${
+                  className={`w-0.25 absolute left-1/2 top-1/2 h-2.5 -translate-x-1/2 -translate-y-1/2 bg-black transition-all duration-200 ${
                     isExpanded ? 'opacity-0' : 'opacity-100'
                   }`}
                 ></span>
@@ -52,12 +55,38 @@ export default function Hero({ data }) {
         >
           <Grid className="mt-8">
             <ul className="col-start-2 col-end-4 flex flex-col">
-              {data?.quick_info?.map((info, index) => (
-                <li className="flex gap-4" key={index}>
-                  <p className="flex-1 text-sm leading-4">{info?.title}</p>
-                  <p className="flex-[4.5] text-sm leading-4">{info?.text}</p>
+              {data?.project_metadata?.agency && (
+                <li className="flex gap-4">
+                  <p className="flex-1 text-sm leading-4">Agency</p>
+                  <p className="flex-[4.5] text-sm leading-4">
+                    {data.project_metadata.agency}
+                  </p>
                 </li>
-              ))}
+              )}
+              {data?.project_metadata?.client && (
+                <li className="flex gap-4">
+                  <p className="flex-1 text-sm leading-4">Client</p>
+                  <p className="flex-[4.5] text-sm leading-4">
+                    {data.project_metadata.client}
+                  </p>
+                </li>
+              )}
+              {data?.project_metadata?.role && (
+                <li className="flex gap-4">
+                  <p className="flex-1 text-sm leading-4">Role</p>
+                  <p className="flex-[4.5] text-sm leading-4">
+                    {data.project_metadata.role}
+                  </p>
+                </li>
+              )}
+              {data?.project_metadata?.year && (
+                <li className="flex gap-4">
+                  <p className="flex-1 text-sm leading-4">Year</p>
+                  <p className="flex-[4.5] text-sm leading-4">
+                    {data.project_metadata.year}
+                  </p>
+                </li>
+              )}
             </ul>
 
             <div className="col-start-4 -col-end-1">
@@ -82,3 +111,5 @@ export default function Hero({ data }) {
     </section>
   )
 }
+
+export default Hero

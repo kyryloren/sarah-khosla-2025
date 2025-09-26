@@ -1,85 +1,33 @@
 import Link from 'next/link'
+import { RenderImage } from 'styles'
 
 export default function Masonary({ data }) {
-  const images = [
-    {
-      id: 1,
-      height: 'h-64',
-      title: 'Creative Project',
-    },
-    {
-      id: 2,
-      height: 'h-48',
-      title: 'Brand Identity',
-    },
-    {
-      id: 3,
-      height: 'h-72',
-      title: 'Web Design',
-    },
-    {
-      id: 4,
-      height: 'h-56',
-      title: 'Mobile App',
-    },
-    {
-      id: 5,
-      height: 'h-40',
-      title: 'Logo Design',
-    },
-    {
-      id: 6,
-      height: 'h-60',
-      title: 'UI/UX Design',
-    },
-    {
-      id: 7,
-      height: 'h-52',
-      title: 'Print Design',
-    },
-    {
-      id: 8,
-      height: 'h-44',
-      title: 'Illustration',
-    },
-    {
-      id: 9,
-      height: 'h-68',
-      title: 'Photography',
-    },
-    {
-      id: 10,
-      height: 'h-36',
-      title: 'Icon Design',
-    },
-    {
-      id: 11,
-      height: 'h-58',
-      title: 'Packaging',
-    },
-    {
-      id: 12,
-      height: 'h-50',
-      title: 'Motion Graphics',
-    },
-  ]
-
-  console.log(data)
-
   return (
     <div className="columns-3 gap-6" style={{ columnFill: 'balance' }}>
-      {images.map((image) => (
+      {data?.map((project, idx) => (
         <Link
-          key={image.id}
-          href={`/${image.id}`}
-          className="mb-8 block break-inside-avoid"
+          key={project?.slug || idx}
+          href={`/${project?.slug}`}
+          className="group relative mb-8 flex cursor-pointer flex-col no-underline"
         >
-          <div
-            className={`${image.height} flex items-center justify-center bg-neutral-800`}
+          <RenderImage
+            data={project?.thumbnail}
+            fill={false}
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 33vw, 25vw"
+            className={
+              'z-4 visible h-auto opacity-100 group-hover:invisible group-hover:opacity-0'
+            }
           />
-          <div className="mt-2">
-            <p className="text-sm leading-4">{image.title}</p>
-          </div>
+          <RenderImage
+            data={project?.animated}
+            fill={false}
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 33vw, 25vw"
+            className={
+              'z-3 visible absolute left-0 top-0 h-auto opacity-0 group-hover:opacity-100'
+            }
+          />
+
+          <p className="text-sm leading-4">{project?.title}</p>
         </Link>
       ))}
     </div>

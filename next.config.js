@@ -2,15 +2,12 @@ const nextConfig = {
   compiler: {
     removeConsole: process.env.NODE_ENV !== 'development',
   },
-    images: {
-      remotePatterns: [
-        {
-          protocol: process.env.PROTOCOL,
-          hostname: process.env.STRAPI_MEDIA,
-        },
-      ],
-      dangerouslyAllowSVG: true,
-    },
+  images: {
+    remotePatterns: (() => {
+      return [{ protocol: 'https', hostname: 'cdn.sanity.io' }]
+    })(),
+    dangerouslyAllowSVG: true,
+  },
   headers: async () => {
     return [
       {
