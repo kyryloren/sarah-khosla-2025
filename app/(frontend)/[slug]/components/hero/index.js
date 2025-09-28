@@ -38,7 +38,7 @@ const Hero = ({ data }) => {
             <p className="text-sm leading-4">{data?.title}</p>
           </div>
 
-          <div className="col-start-4 -col-end-1 justify-items-end md:justify-items-start">
+          <div className="col-start-4 -col-end-1 justify-self-end md:justify-self-start">
             <button
               onClick={handleToggle}
               className="flex cursor-pointer items-center gap-2 transition-all duration-200 hover:opacity-60"
