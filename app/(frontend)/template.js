@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Suspense } from 'react'
 import { Lenis, Nav, ScrollBar, About } from 'components'
 import { fetchSanity, queries } from 'lib'
 import { draftMode } from 'next/headers'
@@ -44,14 +44,22 @@ export default async function Template({ children }) {
 
   return (
     <>
-      <Nav socials={globalDoc?.socials} />
+      <Suspense
+        fallback={
+          <div className="fixed left-0 top-0 z-50 w-full bg-neutral-50 py-4 text-neutral-950 sm:py-5 md:py-7 dark:bg-neutral-950 dark:text-neutral-50" />
+        }
+      >
+        <Nav socials={globalDoc?.socials} />
+      </Suspense>
 
       <main id="main" className="relative mt-40">
-        <About
-          data={aboutDoc}
-          socials={globalDoc?.socials}
-          projects={homeDoc?.featuredProjects}
-        />
+        <Suspense fallback={<div />}>
+          <About
+            data={aboutDoc}
+            socials={globalDoc?.socials}
+            projects={homeDoc?.featuredProjects}
+          />
+        </Suspense>
         {children}
       </main>
       {/* <Footer /> */}
