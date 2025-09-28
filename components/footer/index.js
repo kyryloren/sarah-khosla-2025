@@ -20,7 +20,7 @@ export default function Footer({ socials, homeDoc }) {
 
           <p
             className={twMerge(
-              'col-span-2 col-start-1 row-start-2 text-sm leading-4 md:col-start-2 md:row-start-1',
+              'col-span-5 col-start-1 row-start-2 text-sm leading-4 sm:col-span-2 md:col-start-2 md:row-start-1',
               pathname !== '/' && 'hidden',
             )}
           >
@@ -38,7 +38,7 @@ export default function Footer({ socials, homeDoc }) {
             )}
           </p>
 
-          <p className="col-span-2 col-start-4 justify-self-end text-sm leading-4 md:col-span-1 md:col-start-4 md:row-start-1 md:justify-self-start">
+          <p className="col-span-2 col-start-1 row-start-3 justify-self-start text-sm leading-4 sm:col-start-4 sm:justify-self-end md:col-span-1 md:col-start-4 md:row-start-1 md:justify-self-start">
             {socials?.linkedin && (
               <a
                 href={socials?.linkedin}
@@ -68,7 +68,7 @@ export default function Footer({ socials, homeDoc }) {
                 : `/${getNextProject(pathname.slice(1), homeDoc?.featuredProjects)?.slug}`
             }
             onClick={() => pathname === '/' && lenis.scrollTo(0)}
-            className='col-span-2 col-start-4 row-start-2 flex cursor-pointer items-center gap-2 justify-self-end text-sm leading-4 before:inline-block before:h-2 before:w-2 before:rounded-full before:bg-neutral-950 before:content-[""] md:col-span-1 md:col-start-5 md:row-start-1 dark:before:bg-neutral-50'
+            className='col-span-2 col-start-4 row-start-3 flex cursor-pointer items-center gap-2 justify-self-end text-sm leading-4 before:inline-block before:h-2 before:w-2 before:rounded-full before:bg-neutral-950 before:content-[""] sm:row-start-2 md:col-span-1 md:col-start-5 md:row-start-1 dark:before:bg-neutral-50'
           >
             {pathname === '/' ? 'Back to top' : 'Next Project'}
           </a>
