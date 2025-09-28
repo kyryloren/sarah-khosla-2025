@@ -14,8 +14,24 @@ export default defineType({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
-      name: 'favicon',
-      title: 'Favicon',
+      name: 'siteDescription',
+      title: 'Site Description',
+      type: 'text',
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: 'keywords',
+      title: 'Keywords',
+      type: 'array',
+      of: [{ type: 'string' }],
+      options: {
+        layout: 'tags',
+      },
+      description: 'Keywords for SEO purposes',
+    }),
+    defineField({
+      name: 'shareImage',
+      title: 'Share Image',
       type: 'image',
       options: { hotspot: true },
       fields: [
@@ -27,17 +43,7 @@ export default defineType({
             Rule.required().error('Alt text is required for accessibility'),
         }),
       ],
-    }),
-    defineField({
-      name: 'siteDescription',
-      title: 'Site Description',
-      type: 'text',
-      validation: (Rule) => Rule.required(),
-    }),
-    defineField({
-      name: 'defaultSeo',
-      title: 'Default SEO',
-      type: 'seo',
+      description: 'Default image for social media sharing',
     }),
     defineField({
       name: 'socials',

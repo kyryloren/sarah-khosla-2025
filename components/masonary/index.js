@@ -1,4 +1,7 @@
+'use client'
+
 import Link from 'next/link'
+import MasonryComponent from 'react-masonry-css'
 import { RenderImage } from 'styles'
 
 export default function Masonary({ data }) {
@@ -7,14 +10,14 @@ export default function Masonary({ data }) {
       <p className="md:mt-30 mb-8 mt-20 text-sm leading-4 sm:mb-10 xl:mt-40">
         Selected Works
       </p>
-      <div
-        className="columns-1 gap-6 sm:columns-2 md:columns-3"
-        style={{ columnFill: 'balance' }}
+      <MasonryComponent
+        className="flex w-full gap-6"
+        breakpointCols={{ 440: 1, 768: 2, default: 3 }}
       >
         {data?.map((project, idx) => (
           <div
             key={project?.slug || idx}
-            className="mb-5 break-inside-avoid sm:mb-8"
+            className="mb-5 flex flex-col gap-2 sm:mb-8"
           >
             <Link
               href={`/${project?.slug}`}
@@ -38,11 +41,11 @@ export default function Masonary({ data }) {
                   }
                 />
               </div>
-              <p className="mt-2 text-sm leading-4">{project?.title}</p>
+              <p className="text-sm leading-4">{project?.title}</p>
             </Link>
           </div>
         ))}
-      </div>
+      </MasonryComponent>
     </>
   )
 }

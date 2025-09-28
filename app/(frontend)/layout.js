@@ -1,50 +1,37 @@
 import { VisualEditing } from 'next-sanity/visual-editing'
 import { draftMode } from 'next/headers'
 import { DisableDraftMode, RouteTheme } from 'components'
+import { fetchSanity, queries, urlFor } from 'lib'
 
 import { Haffer } from 'styles'
-
 import '/styles/globals.css'
 
 const title = 'Sarah Khosla'
 const description = `Sarah Khosla Personal Portfolio`
 
-export const metadata = {
-  title: {
-    template: '%s | Sarah Khosla',
-    default: title,
-  },
-  description: description,
-  keywords: [],
-  openGraph: {
-    title: title,
-    description: description,
-    url: 'https://www.sarahkhosla.com',
-    locale: 'en_US',
-    type: 'website',
-    images: {
-      url: `${
-        process.env.NODE_ENV === 'development'
-          ? 'http://localhost:3000'
-          : 'https://www.sarahkhosla.com'
-      }/og-image.jpg`,
-      width: 1200,
-      height: 630,
+export async function generateMetadata() {
+  const globalDoc = await fetchSanity(queries.global, {}, undefined)
+
+  return {
+    title: {
+      template: globalDoc.siteName ? `%s | ${globalDoc.siteName}` : title,
+      default: globalDoc.siteName || title,
     },
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: title,
-    description: description,
-    creator: '@newstudio',
-    images: [
-      `${
-        process.env.NODE_ENV === 'development'
-          ? 'http://localhost:3000'
-          : 'https://www.sarahkhosla.com'
-      }/og-image.jpg`,
-    ],
-  },
+    description: globalDoc.siteDescription || description,
+    keywords: globalDoc.keywords || [],
+    openGraph: {
+      title: globalDoc.siteName || title,
+      description: globalDoc.siteDescription || description,
+      url: 'https://www.sarahkhosla.com',
+      locale: 'en_US',
+      type: 'website',
+      images: {
+        url: urlFor(globalDoc?.shareImage?.asset?._ref).url(),
+        width: 1200,
+        height: 630,
+      },
+    },
+  }
 }
 
 export default async function RootLayout({ children }) {
