@@ -201,7 +201,7 @@ export default function About({ data, socials, projects }) {
         </Row>
 
         <div
-          className={`mt-7 transition-all duration-700 ease-out ${
+          className={`transition-all duration-700 ease-out ${
             isAnimated ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
           }`}
           style={{ transitionDelay: isAnimated ? '600ms' : '0ms' }}
