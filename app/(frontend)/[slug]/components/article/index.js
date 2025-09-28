@@ -43,7 +43,10 @@ export default function Article({ data }) {
                   : item?.right_media?.image?.alt
 
               return (
-                <div key={index} className="col-span-full flex gap-2">
+                <div
+                  key={index}
+                  className="col-span-full flex flex-col gap-2 sm:flex-row"
+                >
                   <RenderMedia
                     data={leftMediaData}
                     alt={leftAlt}

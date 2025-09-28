@@ -1,6 +1,7 @@
 import project from './documents/project'
 import about from './documents/about'
 import globalSettings from './documents/globalSettings'
+import home from './documents/home'
 
 import titledList from './objects/titledList'
 import listItem from './objects/listItem'
@@ -15,6 +16,7 @@ export const schema = [
   project,
   about,
   globalSettings,
+  home,
   // objects
   titledList,
   listItem,

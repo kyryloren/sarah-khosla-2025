@@ -37,7 +37,8 @@ export default defineConfig({
     types: schema,
     templates: (prev) =>
       prev.filter(
-        ({ schemaType }) => !['about', 'globalSettings'].includes(schemaType),
+        ({ schemaType }) =>
+          !['home', 'about', 'globalSettings'].includes(schemaType),
       ),
   },
 })

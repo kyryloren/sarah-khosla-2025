@@ -4,7 +4,18 @@ export const structure = (S) =>
     .title('Content')
     .items([
       S.listItem()
+        .title('Home')
+        .icon(() => '🏠')
+        .child(
+          S.editor()
+            .id('home')
+            .schemaType('home')
+            .documentId('home')
+            .title('Home'),
+        ),
+      S.listItem()
         .title('About')
+        .icon(() => '👤')
         .child(
           S.editor()
             .id('about')
@@ -14,6 +25,7 @@ export const structure = (S) =>
         ),
       S.listItem()
         .title('Global')
+        .icon(() => '⚙️')
         .child(
           S.editor()
             .id('globalSettings')
@@ -22,6 +34,7 @@ export const structure = (S) =>
         ),
       S.divider(),
       ...S.documentTypeListItems().filter(
-        (li) => !['about', 'globalSettings'].includes(String(li.getId())),
+        (li) =>
+          !['home', 'about', 'globalSettings'].includes(String(li.getId())),
       ),
     ])

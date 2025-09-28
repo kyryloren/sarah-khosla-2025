@@ -4,6 +4,7 @@ export default defineType({
   name: 'globalSettings',
   title: 'Global',
   type: 'document',
+  icon: () => '⚙️',
   options: { singleton: true },
   fields: [
     defineField({

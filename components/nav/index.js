@@ -14,7 +14,6 @@ export default function Nav({ socials }) {
   const pathname = usePathname()
 
   useEffect(() => {
-    // Check if 'about' query parameter is set to 'true'
     const hasAboutParam = searchParams.get('about') === 'true'
     setIsMenuOpen(hasAboutParam)
   }, [searchParams])
@@ -23,7 +22,6 @@ export default function Nav({ socials }) {
     const newMenuState = !isMenuOpen
     setIsMenuOpen(newMenuState)
 
-    // Update URL based on menu state
     if (newMenuState) {
       // Add ?about=true to URL
       const currentUrl = new URL(window.location.href)
@@ -39,10 +37,10 @@ export default function Nav({ socials }) {
   }
 
   return (
-    <header className="fixed left-0 top-0 z-50 w-full bg-neutral-50 py-7 text-neutral-950 dark:bg-neutral-950 dark:text-neutral-50">
+    <header className="fixed left-0 top-0 z-50 w-full bg-neutral-50 py-4 text-neutral-950 sm:py-5 md:py-7 dark:bg-neutral-950 dark:text-neutral-50">
       <Container>
         <Grid>
-          <div className="col-start-1 col-end-2">
+          <div className="col-start-1 col-end-5 sm:col-end-3 md:col-end-2">
             <Link
               href={'/'}
               className="hover:opacity-60"
@@ -67,14 +65,14 @@ export default function Nav({ socials }) {
               <p className="text-sm leading-4">Design & Art Direction</p>
             </Link>
           </div>
-          <div className="col-start-2 col-end-4">
+          <div className="col-start-3 col-end-5 hidden sm:block md:col-start-2 md:col-end-4">
             <p className="text-sm leading-4">
               Previously a Sr. Art Director
               <br />
               at Stink Studios, currently freelancing.
             </p>
           </div>
-          <div className="col-start-4 col-end-5">
+          <div className="col-start-4 col-end-5 hidden md:block">
             {socials?.linkedin && (
               <a
                 href={socials?.linkedin}

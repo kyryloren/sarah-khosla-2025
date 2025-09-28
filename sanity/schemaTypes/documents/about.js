@@ -4,6 +4,7 @@ export default defineType({
   name: 'about',
   title: 'About',
   type: 'document',
+  icon: () => '👤',
   preview: {
     select: {
       title: 'About',

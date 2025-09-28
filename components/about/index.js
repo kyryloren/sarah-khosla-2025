@@ -31,10 +31,10 @@ function Row({
       }}
       onClick={accordion ? toggleExpanded : undefined}
     >
-      <div className="col-span-1">
+      <div className="col-span-4 row-start-1 md:col-span-1">
         <p className="text-sm leading-4">{title}</p>
       </div>
-      <div className="col-span-3">
+      <div className="col-span-5 mt-6 md:col-span-3 md:row-start-1 md:mt-0">
         <div
           className={`${
             accordion
@@ -48,7 +48,7 @@ function Row({
         </div>
       </div>
       {accordion && (
-        <div className="col-span-1 flex items-start justify-end">
+        <div className="col-span-1 row-start-1 flex items-start justify-end">
           <div
             className="pointer-events-none"
             aria-label={isExpanded ? 'Collapse' : 'Expand'}
@@ -131,7 +131,7 @@ export default function About({ data, socials, projects }) {
       ref={sectionRef}
       data-lenis-prevent
       id="about"
-      className={`pt-30 fixed left-0 top-0 z-40 h-screen w-full overflow-y-auto overscroll-contain bg-neutral-50 text-neutral-950 dark:bg-neutral-950 dark:text-neutral-50 ${
+      className={`fixed left-0 top-0 z-40 h-screen w-full overflow-y-auto overscroll-contain bg-neutral-50 pt-40 text-neutral-950 dark:bg-neutral-950 dark:text-neutral-50 ${
         isVisible ? 'pointer-events-auto' : 'pointer-events-none'
       }`}
       style={{
@@ -147,7 +147,7 @@ export default function About({ data, socials, projects }) {
     >
       <Container>
         <Row title="About" isAnimated={isAnimated} delay={0}>
-          <p className="whitespace-pre-line text-2xl leading-7">
+          <p className="whitespace-pre-line text-2xl leading-7 md:text-3xl md:leading-9">
             {data?.description}
           </p>
         </Row>

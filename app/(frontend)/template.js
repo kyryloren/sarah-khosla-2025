@@ -45,13 +45,15 @@ export default async function Template({ children }) {
   return (
     <>
       <Nav socials={globalDoc?.socials} />
-      <About
-        data={aboutDoc}
-        socials={globalDoc?.socials}
-        projects={homeDoc?.featuredProjects}
-      />
 
-      <main id="main">{children}</main>
+      <main id="main" className="relative mt-40">
+        <About
+          data={aboutDoc}
+          socials={globalDoc?.socials}
+          projects={homeDoc?.featuredProjects}
+        />
+        {children}
+      </main>
       {/* <Footer /> */}
       <ScrollBar />
       <Lenis root />
