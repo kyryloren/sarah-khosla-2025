@@ -4,21 +4,25 @@ import { Container } from 'styles'
 import { draftMode } from 'next/headers'
 
 export default async function Home() {
-  const projectsDoc = await fetchSanity(
-    queries.projectsList,
+  const { isEnabled } = await draftMode()
+
+  const homeDoc = await fetchSanity(
+    queries.home,
     {},
-    {
-      perspective: (await draftMode()).isEnabled
-        ? 'previewDrafts'
-        : 'published',
-    },
+    isEnabled
+      ? {
+          perspective: 'drafts',
+          useCdn: false,
+          stega: true,
+        }
+      : undefined,
   )
 
   return (
     <>
       <div className="mt-50 relative">
         <Container>
-          <Masonary data={projectsDoc} />
+          <Masonary data={homeDoc?.featuredProjects} />
         </Container>
       </div>
     </>
