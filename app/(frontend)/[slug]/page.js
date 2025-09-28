@@ -1,4 +1,4 @@
-import { fetchSanity, queries, sanityClient } from 'lib'
+import { fetchSanity, queries } from 'lib'
 import { Hero, Article } from './components'
 import { draftMode } from 'next/headers'
 

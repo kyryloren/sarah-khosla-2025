@@ -43,7 +43,7 @@ export default function Nav({ socials }) {
           <div className="col-start-1 col-end-5 sm:col-end-3 md:col-end-2">
             <Link
               href={'/'}
-              className="hover:opacity-60"
+              className="inline-block w-fit hover:opacity-60"
               onClick={(e) => {
                 e.preventDefault()
                 // Close About tab if open and remove query param
@@ -61,8 +61,8 @@ export default function Nav({ socials }) {
                 }
               }}
             >
-              <p className="text-sm leading-4">Sarah Khosla</p>
-              <p className="text-sm leading-4">Design & Art Direction</p>
+              <p className="w-fit text-sm leading-4">Sarah Khosla</p>
+              <p className="w-fit text-sm leading-4">Design & Art Direction</p>
             </Link>
           </div>
           <div className="col-start-3 col-end-5 hidden sm:block md:col-start-2 md:col-end-4">

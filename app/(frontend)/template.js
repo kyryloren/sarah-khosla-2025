@@ -1,5 +1,5 @@
 import React, { Suspense } from 'react'
-import { Lenis, Nav, ScrollBar, About } from 'components'
+import { Lenis, Nav, ScrollBar, About, Footer } from 'components'
 import { fetchSanity, queries } from 'lib'
 import { draftMode } from 'next/headers'
 
@@ -17,7 +17,6 @@ export default async function Template({ children }) {
         }
       : undefined,
   )
-
   const globalDoc = await fetchSanity(
     queries.global,
     {},
@@ -29,7 +28,6 @@ export default async function Template({ children }) {
         }
       : undefined,
   )
-
   const homeDoc = await fetchSanity(
     queries.home,
     {},
@@ -62,7 +60,7 @@ export default async function Template({ children }) {
         </Suspense>
         {children}
       </main>
-      {/* <Footer /> */}
+      <Footer socials={globalDoc?.socials} homeDoc={homeDoc} />
       <ScrollBar />
       <Lenis root />
     </>
