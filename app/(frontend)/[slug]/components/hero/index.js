@@ -71,7 +71,7 @@ const Hero = ({ data }) => {
               <ul className="col-start-1 col-end-5 row-start-2 mt-4 flex flex-col md:col-start-2 md:col-end-4 md:row-start-1 md:mt-0">
                 {data?.project_metadata?.agency && (
                   <li className="flex gap-4">
-                    <p className="flex-1 text-sm leading-4">Agency</p>
+                    <p className="flex-1 text-sm font-bold leading-4">Agency</p>
                     <p
                       data-sanity-edit-target
                       className="flex-[4.5] text-sm leading-4"
@@ -82,7 +82,7 @@ const Hero = ({ data }) => {
                 )}
                 {data?.project_metadata?.client && (
                   <li className="flex gap-4">
-                    <p className="flex-1 text-sm leading-4">Client</p>
+                    <p className="flex-1 text-sm font-bold leading-4">Client</p>
                     <p
                       data-sanity-edit-target
                       className="flex-[4.5] text-sm leading-4"
@@ -93,7 +93,7 @@ const Hero = ({ data }) => {
                 )}
                 {data?.project_metadata?.role && (
                   <li className="flex gap-4">
-                    <p className="flex-1 text-sm leading-4">Role</p>
+                    <p className="flex-1 text-sm font-bold leading-4">Role</p>
                     <p
                       data-sanity-edit-target
                       className="flex-[4.5] text-sm leading-4"
@@ -104,7 +104,7 @@ const Hero = ({ data }) => {
                 )}
                 {data?.project_metadata?.year && (
                   <li className="flex gap-4">
-                    <p className="flex-1 text-sm leading-4">Year</p>
+                    <p className="flex-1 text-sm font-bold leading-4">Year</p>
                     <p
                       data-sanity-edit-target="project_metadata.year"
                       className="flex-[4.5] text-sm leading-4"

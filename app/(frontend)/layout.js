@@ -2,6 +2,7 @@ import { VisualEditing } from 'next-sanity/visual-editing'
 import { draftMode } from 'next/headers'
 import { DisableDraftMode, RouteTheme } from 'components'
 import { fetchSanity, queries, urlFor } from 'lib'
+import { Analytics } from '@vercel/analytics/next'
 
 import { Haffer } from 'styles'
 import '/styles/globals.css'
@@ -86,6 +87,7 @@ export default async function RootLayout({ children }) {
       >
         <div suppressHydrationWarning>{children}</div>
         <RouteTheme />
+        <Analytics />
 
         {(await draftMode()).isEnabled && (
           <>
