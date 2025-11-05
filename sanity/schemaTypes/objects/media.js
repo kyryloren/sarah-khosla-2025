@@ -72,6 +72,14 @@ export default defineType({
           return true
         }),
     }),
+    defineField({
+      name: 'keepAudio',
+      title: 'Keep Video Audio',
+      description: 'Enable audio playback for this video',
+      type: 'boolean',
+      initialValue: false,
+      hidden: ({ parent }) => parent?.mediaType !== 'video',
+    }),
   ],
   preview: {
     select: {

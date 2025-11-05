@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect } from 'react'
 import { twMerge } from 'tailwind-merge'
+import Icon from 'components/icon'
 
 export default function VideoPlayer({
   src,
@@ -13,9 +14,11 @@ export default function VideoPlayer({
   loop = false,
   playsInline = false,
   controls = false,
+  keepAudio = false,
   ...props
 }) {
   const [isInViewport, setIsInViewport] = useState(false)
+  const [isMuted, setIsMuted] = useState(muted)
   const videoRef = useRef(null)
   const containerRef = useRef(null)
 
@@ -46,6 +49,13 @@ export default function VideoPlayer({
     }
   }, [])
 
+  // Sync muted state with video element
+  useEffect(() => {
+    const video = videoRef.current
+    if (!video) return
+    video.muted = isMuted
+  }, [isMuted])
+
   // Play/pause based on viewport to avoid reloading source which can cause flashes
   useEffect(() => {
     const video = videoRef.current
@@ -55,13 +65,26 @@ export default function VideoPlayer({
       if (autoPlay) {
         const playPromise = video.play()
         if (playPromise && typeof playPromise.catch === 'function') {
-          playPromise.catch(() => {})
+          playPromise.catch((error) => {
+            console.warn('Video autoplay failed:', error)
+          })
         }
       }
     } else {
       video.pause()
     }
   }, [isInViewport, autoPlay])
+
+  const handleToggleMute = () => {
+    setIsMuted((prev) => !prev)
+  }
+
+  const handleKeyDown = (event) => {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault()
+      handleToggleMute()
+    }
+  }
 
   return (
     <div
@@ -74,17 +97,31 @@ export default function VideoPlayer({
         src={src}
         poster={poster}
         autoPlay={autoPlay}
-        muted={muted}
+        muted={isMuted}
         loop={loop}
         playsInline={playsInline}
         controls={controls}
         className="h-full w-full object-cover"
-        preload="metadata"
+        preload="auto"
         aria-label={alt}
       >
         <track kind="captions" />
         Your browser does not support the video tag.
       </video>
+      {keepAudio && (
+        <button
+          onClick={handleToggleMute}
+          onKeyDown={handleKeyDown}
+          tabIndex={0}
+          aria-label={isMuted ? 'Unmute video' : 'Mute video'}
+          className="absolute bottom-4 right-4 z-10 flex h-12 w-12 cursor-pointer items-center justify-center rounded-full bg-white/50 backdrop-blur-[10px] transition-all duration-200 hover:bg-white/70 focus:outline-none focus:ring-2 focus:ring-black/50"
+        >
+          <Icon
+            name={isMuted ? 'unmute' : 'mute'}
+            className="h-5 w-5 text-black"
+          />
+        </button>
+      )}
     </div>
   )
 }

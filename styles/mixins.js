@@ -80,6 +80,10 @@ export function RenderVideo({ data, className, ...props }) {
 
   if (!videoUrl) return null
 
+  // Always start muted for autoplay to work (browsers require this)
+  // If keepAudio is true, show button to allow unmuting
+  const keepAudio = data?.keepAudio === true
+
   return (
     <VideoPlayer
       src={videoUrl}
@@ -91,6 +95,7 @@ export function RenderVideo({ data, className, ...props }) {
       loop={true}
       playsInline={true}
       controls={false}
+      keepAudio={keepAudio}
       {...props}
     />
   )
