@@ -41,7 +41,7 @@ export default function Masonary({ data }) {
                   }
                 />
               </div>
-              <p className="text-sm leading-4">{project?.title}</p>
+              <p className="text-sm leading-4 mt-2">{project?.title}</p>
             </Link>
           </div>
         ))}
