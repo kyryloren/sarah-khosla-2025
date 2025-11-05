@@ -75,7 +75,7 @@ export function RenderImage({
   )
 }
 
-export function RenderVideo({ data, className, ...props }) {
+export function RenderVideo({ data, fill = false, className, ...props }) {
   const videoUrl = fileUrlFromRef(data)
 
   if (!videoUrl) return null
@@ -84,20 +84,85 @@ export function RenderVideo({ data, className, ...props }) {
   // If keepAudio is true, show button to allow unmuting
   const keepAudio = data?.keepAudio === true
 
+  // Get dimensions from video asset metadata to prevent CLS
+  const dimensions = data?.asset?.metadata?.dimensions
+  const aspectRatio =
+    !fill && dimensions?.width && dimensions?.height
+      ? (dimensions.height / dimensions.width) * 100
+      : null
+
+  // Use aspect ratio padding trick to reserve space and prevent CLS when not using fill
+  const containerStyle = aspectRatio ? { paddingTop: `${aspectRatio}%` } : {}
+
+  // When fill is true, render directly without aspect ratio container
+  if (fill) {
+    return (
+      <VideoPlayer
+        src={videoUrl}
+        poster={data?.asset?.metadata?.lqip || data?.asset?.metadata?.preview}
+        alt={data?.alt || 'Studio Case Study Video'}
+        className={twMerge('absolute inset-0 h-full w-full', className)}
+        autoPlay={true}
+        muted={true}
+        loop={true}
+        playsInline={true}
+        controls={false}
+        keepAudio={keepAudio}
+        {...props}
+      />
+    )
+  }
+
+  // If we have aspect ratio, use padding trick. Otherwise, let video determine its own size
+  if (aspectRatio) {
+    return (
+      <div
+        className={twMerge('relative w-full', className)}
+        style={containerStyle}
+      >
+        <div className="absolute inset-0 h-full w-full">
+          <VideoPlayer
+            src={videoUrl}
+            poster={
+              data?.asset?.metadata?.lqip || data?.asset?.metadata?.preview
+            }
+            alt={data?.alt || 'Studio Case Study Video'}
+            className="h-full w-full"
+            autoPlay={true}
+            muted={true}
+            loop={true}
+            playsInline={true}
+            controls={false}
+            keepAudio={keepAudio}
+            {...props}
+          />
+        </div>
+      </div>
+    )
+  }
+
+  // Fallback: use default 16:9 aspect ratio if dimensions aren't available
   return (
-    <VideoPlayer
-      src={videoUrl}
-      poster={data?.asset?.metadata?.lqip || data?.asset?.metadata?.preview}
-      alt={data?.alt || 'Studio Case Study Video'}
-      className={className}
-      autoPlay={true}
-      muted={true}
-      loop={true}
-      playsInline={true}
-      controls={false}
-      keepAudio={keepAudio}
-      {...props}
-    />
+    <div
+      className={twMerge('relative w-full', className)}
+      style={{ paddingTop: '56.25%' }} // 16:9 aspect ratio
+    >
+      <div className="absolute inset-0 h-full w-full">
+        <VideoPlayer
+          src={videoUrl}
+          poster={data?.asset?.metadata?.lqip || data?.asset?.metadata?.preview}
+          alt={data?.alt || 'Studio Case Study Video'}
+          className="h-full w-full"
+          autoPlay={true}
+          muted={true}
+          loop={true}
+          playsInline={true}
+          controls={false}
+          keepAudio={keepAudio}
+          {...props}
+        />
+      </div>
+    </div>
   )
 }
 
@@ -145,14 +210,15 @@ export default function RenderMedia({
 
   return (
     <div
-      className={twMerge('relative h-full w-full overflow-hidden', className)}
+      className={twMerge(
+        'relative w-full overflow-hidden',
+        fill ? 'absolute inset-0 h-full' : '',
+        className,
+      )}
       {...props}
     >
       {isVideoFile ? (
-        <RenderVideo
-          data={mediaData}
-          className={fill ? 'absolute inset-0 h-full w-full' : ''}
-        />
+        <RenderVideo data={mediaData} fill={fill} />
       ) : isImageAsset || isFileAsset ? (
         <RenderImage
           fill={fill}
