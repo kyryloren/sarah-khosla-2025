@@ -49,8 +49,9 @@ export function RenderImage({
     // Get dimensions using Sanity's utility
     dimensions = getImageDimensions(data)
 
-    // Generate blur placeholder using Sanity's URL builder
-    blurDataURL = urlFor(data).width(24).height(24).blur(10).url()
+    // Use Sanity's lqip (Low Quality Image Placeholder) if available
+    // This is a base64-encoded data URL that Next.js Image can use directly
+    blurDataURL = data?.asset?.metadata?.lqip || undefined
   } else {
     // Non-GIF file assets should not be handled by RenderImage
     return null
@@ -152,7 +153,6 @@ export function RenderVideo({ data, fill = false, className, ...props }) {
           src={videoUrl}
           poster={data?.asset?.metadata?.lqip || data?.asset?.metadata?.preview}
           alt={data?.alt || 'Studio Case Study Video'}
-          className="h-full w-full"
           autoPlay={true}
           muted={true}
           loop={true}
