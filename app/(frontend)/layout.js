@@ -27,7 +27,7 @@ export async function generateMetadata() {
       locale: 'en_US',
       type: 'website',
       images: {
-        url: urlFor(globalDoc?.shareImage?.asset?._ref).url(),
+        url: urlFor(globalDoc?.shareImage).url(),
         width: 1200,
         height: 630,
       },

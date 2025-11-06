@@ -89,7 +89,7 @@ export default function VideoPlayer({
   return (
     <div
       ref={containerRef}
-      className={twMerge('relative h-auto w-full overflow-hidden', className)}
+      className={twMerge('relative h-full w-full overflow-hidden', className)}
       {...props}
     >
       <video

@@ -2,7 +2,7 @@ import { twMerge } from 'tailwind-merge'
 import Image from 'next/image'
 import { getImageDimensions } from '@sanity/asset-utils'
 import { VideoPlayer } from 'components'
-import { urlFor, fileUrlFromRef } from 'lib'
+import { urlFor } from 'lib'
 
 export function RenderImage({
   fill = false,
@@ -17,21 +17,16 @@ export function RenderImage({
 
   const alt = data?.alt || 'Studio Case Study Image'
 
-  // Check if this is a file asset (like a GIF) or an image asset
-  const isFileAsset = data.asset._ref?.startsWith('file-')
-
   // Check if it's a GIF file (which should be rendered as an image, not video)
   const isGifFile =
-    isFileAsset &&
-    (data.asset._ref?.endsWith('gif') ||
-      data.asset?.extension === 'gif' ||
-      data.asset?.metadata?.format === 'gif')
+    data.asset._ref?.endsWith('gif') ||
+    data.asset?.extension === 'gif' ||
+    data.asset?.metadata?.format === 'gif'
 
   let imageUrl, dimensions, blurDataURL
 
-  if (isFileAsset && isGifFile) {
-    // For GIF file assets, use fileUrlFromRef
-    imageUrl = fileUrlFromRef(data)
+  if (isGifFile) {
+    imageUrl = data?.asset?.url
     if (!imageUrl) return null
 
     // For file assets, we can't easily get dimensions or generate blur placeholder
@@ -41,20 +36,18 @@ export function RenderImage({
       width: data.asset?.metadata?.dimensions?.width || 800,
       height: data.asset?.metadata?.dimensions?.height || 600,
     }
-    blurDataURL = undefined // No blur placeholder for file assets
-  } else if (!isFileAsset) {
+    // Use lqip from metadata if available
+    blurDataURL = data.asset?.metadata?.lqip || undefined
+  } else {
     // For image assets, use urlFor
     imageUrl = urlFor(data).format('webp').quality(quality).url()
 
     // Get dimensions using Sanity's utility
     dimensions = getImageDimensions(data)
 
-    // Use Sanity's lqip (Low Quality Image Placeholder) if available
-    // This is a base64-encoded data URL that Next.js Image can use directly
-    blurDataURL = data?.asset?.metadata?.lqip || undefined
-  } else {
-    // Non-GIF file assets should not be handled by RenderImage
-    return null
+    // Use lqip (Low Quality Image Placeholder) from Sanity metadata
+    // This is a base64-encoded blur placeholder that Sanity generates automatically
+    blurDataURL = data.asset?.metadata?.lqip || undefined
   }
 
   return (
@@ -77,8 +70,7 @@ export function RenderImage({
 }
 
 export function RenderVideo({ data, fill = false, className, ...props }) {
-  const videoUrl = fileUrlFromRef(data)
-
+  const videoUrl = data?.asset?.url
   if (!videoUrl) return null
 
   // Always start muted for autoplay to work (browsers require this)
@@ -121,14 +113,14 @@ export function RenderVideo({ data, fill = false, className, ...props }) {
         className={twMerge('relative w-full', className)}
         style={containerStyle}
       >
-        <div className="absolute inset-0 h-full w-full">
+        <div className="absolute inset-0 h-auto w-full">
           <VideoPlayer
             src={videoUrl}
             poster={
               data?.asset?.metadata?.lqip || data?.asset?.metadata?.preview
             }
             alt={data?.alt || 'Studio Case Study Video'}
-            className="h-full w-full"
+            className="h-auto w-full"
             autoPlay={true}
             muted={true}
             loop={true}
@@ -144,24 +136,19 @@ export function RenderVideo({ data, fill = false, className, ...props }) {
 
   // Fallback: use default 16:9 aspect ratio if dimensions aren't available
   return (
-    <div
-      className={twMerge('relative w-full', className)}
-      style={{ paddingTop: '56.25%' }} // 16:9 aspect ratio
-    >
-      <div className="absolute inset-0 h-full w-full">
-        <VideoPlayer
-          src={videoUrl}
-          poster={data?.asset?.metadata?.lqip || data?.asset?.metadata?.preview}
-          alt={data?.alt || 'Studio Case Study Video'}
-          autoPlay={true}
-          muted={true}
-          loop={true}
-          playsInline={true}
-          controls={false}
-          keepAudio={keepAudio}
-          {...props}
-        />
-      </div>
+    <div className={twMerge('relative h-full w-full', className)}>
+      <VideoPlayer
+        src={videoUrl}
+        poster={data?.asset?.metadata?.lqip || data?.asset?.metadata?.preview}
+        alt={data?.alt || 'Studio Case Study Video'}
+        autoPlay={true}
+        muted={true}
+        loop={true}
+        playsInline={true}
+        controls={false}
+        keepAudio={keepAudio}
+        {...props}
+      />
     </div>
   )
 }
@@ -198,9 +185,9 @@ export default function RenderMedia({
   // Check if it's a video file (not a GIF)
   const isVideoFile =
     isFileAsset &&
-    (data.asset._ref?.endsWith('mp4') ||
-      data.asset._ref?.endsWith('webm') ||
-      data.asset._ref?.endsWith('mov') ||
+    (data.asset._id?.endsWith('mp4') ||
+      data.asset._id?.endsWith('webm') ||
+      data.asset._id?.endsWith('mov') ||
       data.asset?.extension === 'mp4' ||
       data.asset?.extension === 'webm' ||
       data.asset?.extension === 'mov' ||
