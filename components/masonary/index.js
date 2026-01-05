@@ -1,5 +1,6 @@
 'use client'
 
+import { MediaImage } from 'components/media'
 import Link from 'next/link'
 import MasonryComponent from 'react-masonry-css'
 import { RenderImage } from 'styles'
@@ -24,7 +25,7 @@ export default function Masonary({ data }) {
               className="group relative flex cursor-pointer flex-col no-underline"
             >
               <div className="relative">
-                <RenderImage
+                <MediaImage
                   data={project?.thumbnail}
                   fill={false}
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 33vw, 25vw"
@@ -32,7 +33,7 @@ export default function Masonary({ data }) {
                     'z-4 visible h-auto opacity-100 group-hover:invisible group-hover:opacity-0'
                   }
                 />
-                <RenderImage
+                <MediaImage
                   data={project?.animated}
                   fill={false}
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 33vw, 25vw"

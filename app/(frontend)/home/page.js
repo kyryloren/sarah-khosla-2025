@@ -1,6 +1,6 @@
-import { Masonary } from 'components'
+import { Masonary, Media } from 'components'
 import { fetchSanity, queries } from 'lib'
-import { Container, RenderMedia } from 'styles'
+import { Container } from 'styles'
 import { draftMode } from 'next/headers'
 
 export default async function Home() {
@@ -20,13 +20,7 @@ export default async function Home() {
 
   return (
     <Container>
-      <RenderMedia
-        data={
-          homeDoc?.heroMedia?.mediaType === 'video'
-            ? homeDoc?.heroMedia?.video
-            : homeDoc?.heroMedia?.image
-        }
-      />
+      <Media media={homeDoc?.heroMedia} />
       <Masonary data={homeDoc?.featuredProjects} />
     </Container>
   )

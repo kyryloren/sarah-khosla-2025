@@ -14,7 +14,7 @@ export default function Footer({ socials, homeDoc }) {
     <footer className="relative pb-4 pt-20">
       <Container>
         <Grid className="items-end">
-          <p className="col-span-2 col-start-1 row-start-1 text-sm leading-4 md:col-span-1">
+          <p className="col-span-2 col-start-1 row-start-1 hidden text-sm leading-4 md:col-span-1 md:block">
             Sarah Khosla
           </p>
 
@@ -24,8 +24,7 @@ export default function Footer({ socials, homeDoc }) {
               pathname !== '/' && 'hidden',
             )}
           >
-            Los Angeles, California
-            <br />
+            <span className="hidden md:block">Los Angeles, California</span>
             {socials?.email && (
               <a
                 href={`mailto:${socials?.email}`}

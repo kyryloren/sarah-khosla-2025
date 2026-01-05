@@ -1,4 +1,5 @@
-import { Container, Grid, RenderMedia } from 'styles'
+import { Media } from 'components'
+import { Container, Grid } from 'styles'
 
 export default function Article({ data }) {
   return (
@@ -7,56 +8,25 @@ export default function Article({ data }) {
         <Grid>
           {data?.map((item, index) => {
             if (item?._type === 'articleCover') {
-              const mediaData =
-                item?.media?.mediaType === 'video'
-                  ? item?.media?.video
-                  : item?.media?.image
-              const alt =
-                item?.media?.mediaType === 'video'
-                  ? item?.media?.video?.alt
-                  : item?.media?.image?.alt
-
               return (
                 <div key={index} className="col-span-full">
-                  <RenderMedia data={mediaData} alt={alt} fill={false} />
+                  <Media media={item?.media} fill={false} />
                 </div>
               )
             }
 
             if (item?._type === 'articleSplit') {
-              const leftMediaData =
-                item?.left_media?.mediaType === 'video'
-                  ? item?.left_media?.video
-                  : item?.left_media?.image
-              const leftAlt =
-                item?.left_media?.mediaType === 'video'
-                  ? item?.left_media?.video?.alt
-                  : item?.left_media?.image?.alt
-
-              const rightMediaData =
-                item?.right_media?.mediaType === 'video'
-                  ? item?.right_media?.video
-                  : item?.right_media?.image
-              const rightAlt =
-                item?.right_media?.mediaType === 'video'
-                  ? item?.right_media?.video?.alt
-                  : item?.right_media?.image?.alt
-
               return (
                 <div
                   key={index}
                   className="col-span-full flex flex-col gap-2 sm:flex-row"
                 >
-                  <RenderMedia
-                    data={leftMediaData}
-                    alt={leftAlt}
-                    fill={false}
-                  />
-                  <RenderMedia
-                    data={rightMediaData}
-                    alt={rightAlt}
-                    fill={false}
-                  />
+                  <div className="min-w-0 flex-1">
+                    <Media media={item?.left_media} fill={false} />
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <Media media={item?.right_media} fill={false} />
+                  </div>
                 </div>
               )
             }

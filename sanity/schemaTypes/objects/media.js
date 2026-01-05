@@ -14,7 +14,8 @@ export default defineType({
       options: {
         list: [
           { title: 'Image', value: 'image' },
-          { title: 'Video', value: 'video' },
+          { title: 'Video (File Upload)', value: 'video' },
+          { title: 'Video (Mux)', value: 'muxVideo' },
         ],
         layout: 'radio',
       },
@@ -73,12 +74,28 @@ export default defineType({
         }),
     }),
     defineField({
+      name: 'muxVideo',
+      title: 'Mux Video',
+      type: 'mux.video',
+      description: 'Upload a video to Mux for optimized streaming',
+      hidden: ({ parent }) => parent?.mediaType !== 'muxVideo',
+      validation: (Rule) =>
+        Rule.custom((value, context) => {
+          const { parent } = context
+          if (parent?.mediaType === 'muxVideo' && !value) {
+            return 'Mux video is required when media type is set to Mux video'
+          }
+          return true
+        }),
+    }),
+    defineField({
       name: 'keepAudio',
       title: 'Keep Video Audio',
       description: 'Enable audio playback for this video',
       type: 'boolean',
       initialValue: false,
-      hidden: ({ parent }) => parent?.mediaType !== 'video',
+      hidden: ({ parent }) =>
+        parent?.mediaType !== 'video' && parent?.mediaType !== 'muxVideo',
     }),
   ],
   preview: {
@@ -86,12 +103,28 @@ export default defineType({
       mediaType: 'mediaType',
       image: 'image',
       video: 'video',
+      muxVideo: 'muxVideo',
       alt: 'image.alt',
     },
-    prepare({ mediaType, image, video, alt }) {
-      const media = mediaType === 'image' ? image : video
+    prepare({ mediaType, image, video, muxVideo, alt }) {
+      let media
+      if (mediaType === 'image') {
+        media = image
+      } else if (mediaType === 'video') {
+        media = video
+      } else if (mediaType === 'muxVideo') {
+        media = muxVideo?.asset?.thumbTime
+          ? { _type: 'image', asset: { _ref: muxVideo.asset.thumbTime } }
+          : undefined
+      }
+
       return {
-        title: mediaType === 'image' ? 'Image' : 'Video',
+        title:
+          mediaType === 'image'
+            ? 'Image'
+            : mediaType === 'muxVideo'
+              ? 'Mux Video'
+              : 'Video',
         subtitle: alt || 'No alt text provided',
         media: mediaType === 'image' ? image : undefined,
       }

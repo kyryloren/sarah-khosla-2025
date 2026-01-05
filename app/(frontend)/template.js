@@ -50,7 +50,7 @@ export default async function Template({ children }) {
         <Nav socials={globalDoc?.socials} />
       </Suspense>
 
-      <main id="main" className="relative mt-40">
+      <main id="main" className="relative mt-30 sm:mt-40">
         <Suspense fallback={<div />}>
           <About
             data={aboutDoc}

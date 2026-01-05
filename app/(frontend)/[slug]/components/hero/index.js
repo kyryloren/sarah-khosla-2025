@@ -2,19 +2,11 @@
 
 import Icon from 'components/icon'
 import Link from 'next/link'
-import { useState, useRef, useEffect } from 'react'
+import { useState } from 'react'
 import { Container, Grid } from 'styles'
 
 const Hero = ({ data }) => {
   const [isExpanded, setIsExpanded] = useState(false)
-  const [contentHeight, setContentHeight] = useState(0)
-  const contentRef = useRef(null)
-
-  useEffect(() => {
-    if (contentRef.current) {
-      setContentHeight(contentRef.current.scrollHeight)
-    }
-  }, [data])
 
   const handleToggle = () => {
     setIsExpanded(!isExpanded)
@@ -61,12 +53,11 @@ const Hero = ({ data }) => {
 
         {/* expanded info */}
         <div
-          className="overflow-hidden transition-all duration-300 ease-in-out"
-          style={{
-            maxHeight: isExpanded ? `${contentHeight}px` : '0px',
-          }}
+          className={`grid transition-[grid-template-rows] duration-300 ease-in-out ${
+            isExpanded ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'
+          }`}
         >
-          <div ref={contentRef}>
+          <div className="min-h-0 overflow-hidden">
             <Grid className="mt-8">
               <ul className="col-start-1 col-end-5 row-start-2 mt-4 flex flex-col md:col-start-2 md:col-end-4 md:row-start-1 md:mt-0">
                 {data?.project_metadata?.agency && (
