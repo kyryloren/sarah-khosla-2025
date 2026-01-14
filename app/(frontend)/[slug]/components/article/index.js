@@ -19,7 +19,7 @@ export default function Article({ data }) {
               return (
                 <div
                   key={index}
-                  className="col-span-full flex flex-col gap-2 sm:flex-row"
+                  className="col-span-full grid grid-cols-1 gap-2 sm:grid-cols-2"
                 >
                   <div className="min-w-0 flex-1">
                     <Media media={item?.left_media} fill={false} />

@@ -284,7 +284,7 @@ function MediaVideo({
   return (
     <div
       ref={containerRef}
-      className={twMerge('relative w-full', className)}
+      className={twMerge('relative h-full w-full', className)}
       style={{ paddingTop: '56.25%' }}
       {...props}
     >
