@@ -15,6 +15,7 @@ export default function Media({
   loop = true,
   playsInline = true,
   controls = false,
+  poster,
   // Image-specific props
   fill = false,
   priority = false,
@@ -79,6 +80,7 @@ export default function Media({
         playsInline={playsInline}
         controls={controls}
         keepAudio={keepAudio}
+        poster={poster}
         alt={alt}
         className={className}
         {...props}
@@ -292,6 +294,7 @@ function MediaMuxVideo({
   playsInline = true,
   controls = false,
   keepAudio = false,
+  poster,
   alt,
   className,
   ...props
@@ -330,6 +333,7 @@ function MediaMuxVideo({
         playsInline={playsInline}
         streamType="on-demand"
         preload="auto"
+        poster={poster}
         className="h-full w-full"
         style={{
           '--controls': controls ? 'inherit' : 'none',
