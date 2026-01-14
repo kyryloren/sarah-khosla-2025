@@ -25,16 +25,8 @@ export default defineType({
     defineField({
       name: 'animated',
       title: 'Animated',
-      type: 'file',
-      fields: [
-        defineField({
-          name: 'alt',
-          type: 'string',
-          title: 'Alternative Text',
-          validation: (Rule) =>
-            Rule.required().error('Alt text is required for accessibility'),
-        }),
-      ],
+      type: 'media',
+      description: 'Animated media displayed on hover in the project grid',
     }),
     defineField({
       name: 'title',

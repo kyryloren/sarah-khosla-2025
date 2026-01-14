@@ -1,9 +1,8 @@
 'use client'
 
-import { MediaImage } from 'components/media'
+import Media, { MediaImage } from 'components/media'
 import Link from 'next/link'
 import MasonryComponent from 'react-masonry-css'
-import { RenderImage } from 'styles'
 
 export default function Masonary({ data }) {
   return (
@@ -23,26 +22,32 @@ export default function Masonary({ data }) {
             <Link
               href={`/${project?.slug}`}
               className="group relative flex cursor-pointer flex-col no-underline"
+              aria-label={`View project: ${project?.title}`}
             >
               <div className="relative">
                 <MediaImage
                   data={project?.thumbnail}
                   fill={false}
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 33vw, 25vw"
-                  className={
-                    'z-4 visible h-auto opacity-100 group-hover:invisible group-hover:opacity-0'
-                  }
+                  className="z-[2] h-auto opacity-100 transition-opacity duration-300 group-hover:opacity-0"
                 />
-                <MediaImage
-                  data={project?.animated}
-                  fill={false}
-                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 33vw, 25vw"
-                  className={
-                    'z-3 visible absolute left-0 top-0 h-auto opacity-0 group-hover:opacity-100'
-                  }
-                />
+                {project?.animated && (
+                  <div className="absolute inset-0 z-[1] opacity-0 transition-opacity duration-0 group-hover:opacity-100">
+                    <Media
+                      media={project?.animated}
+                      fill
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 33vw, 25vw"
+                      autoPlay
+                      muted
+                      loop
+                      playsInline
+                      controls={false}
+                      alt={project?.title}
+                    />
+                  </div>
+                )}
               </div>
-              <p className="text-sm leading-4 mt-2">{project?.title}</p>
+              <p className="mt-2 text-sm leading-4">{project?.title}</p>
             </Link>
           </div>
         ))}
