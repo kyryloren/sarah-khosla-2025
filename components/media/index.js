@@ -315,6 +315,13 @@ function MediaMuxVideo({
   const [isMuted, setIsMuted] = useState(muted)
   const altText = data?.alt || alt || 'Video'
 
+  const dimensions = data?.asset?.data
+  const aspectRatio =
+    dimensions?.aspect_ratio?.replace(':', '/') ||
+    (dimensions?.width && dimensions?.height
+      ? `${dimensions.width}/${dimensions.height}`
+      : '16/9')
+
   const handleToggleMute = () => {
     setIsMuted((prev) => !prev)
   }
@@ -341,6 +348,7 @@ function MediaMuxVideo({
           '--controls': controls ? 'inherit' : 'none',
           '--media-object-fit': 'cover',
           '--media-object-position': 'center',
+          aspectRatio: fill ? undefined : aspectRatio,
         }}
         title={altText}
       />
@@ -365,14 +373,17 @@ function MediaMuxVideo({
     return (
       <div
         className={twMerge('relative h-full w-full overflow-hidden', className)}
-        {...props}
       >
         {muxPlayerElement}
       </div>
     )
   }
 
-  return muxPlayerElement
+  return (
+    <div className={twMerge('relative w-full', className)} style={{aspectRatio}}>
+      {muxPlayerElement}
+    </div>
+  )
 }
 
 // Export sub-components for direct use if needed
