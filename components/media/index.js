@@ -267,19 +267,6 @@ function MediaVideo({
     )
   }
 
-  if (aspectRatio) {
-    return (
-      <div
-        ref={containerRef}
-        className={twMerge('relative w-full', className)}
-        style={containerStyle}
-        {...props}
-      >
-        <div className="absolute inset-0 h-full w-full">{videoElement}</div>
-      </div>
-    )
-  }
-
   // Fallback: 16:9 aspect ratio
   return (
     <div
@@ -380,7 +367,10 @@ function MediaMuxVideo({
   }
 
   return (
-    <div className={twMerge('relative w-full', className)} style={{aspectRatio}}>
+    <div
+      className={twMerge('relative h-full w-full', className)}
+      style={{ aspectRatio }}
+    >
       {muxPlayerElement}
     </div>
   )
